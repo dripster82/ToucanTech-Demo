@@ -27,9 +27,9 @@ class Database extends Config
     public array $default = [
         'DSN'      => '',
         'hostname' => 'localhost',
-        'username' => 'test',
-        'password' => 'test',
-        'database' => 'test',
+        'username' => 'toucantech',
+        'password' => 'password123',
+        'database' => 'ToucanTech_Test',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,
