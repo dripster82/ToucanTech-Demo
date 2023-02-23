@@ -11,7 +11,7 @@ $routes = Services::routes();
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('Schools\ListController');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -29,7 +29,13 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Schools\ListController::index');
+$routes->get('schools', 'Schools\ListController::index');
+$routes->get('schools/(:any)', 'Schools\ListController::index/$1');
+$routes->post('schools/add_member', 'Schools\AddMemberController::index');
+// $routes->delete('/schools/remove_member/', 'Schools\RemoveMemberController::index');
+$routes->delete('schools/(:num)/remove_member/(:num)', 'Schools\RemoveMemberController::index/$1/$2');
+// $routes->delete('schools/(:num)/remove_member/(:num)', [Schools\RemoveMemberController::class, 'index']);
 
 /*
  * --------------------------------------------------------------------

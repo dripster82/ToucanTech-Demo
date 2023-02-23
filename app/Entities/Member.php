@@ -24,4 +24,8 @@ class Member extends Entity
 
 		return $this;
 	}
+
+	public function nameWithEmail() {
+		return $this->name.' ('.$this->email_address.')';
+	}
 }
