@@ -2,13 +2,10 @@
 
 namespace App\Controllers\Schools;
 
-use App\Controllers\BaseController;
 use CodeIgniter\HTTP\Response;
 
-class AddMemberController extends BaseController
+class AddMemberController extends BaseApiController
 {
-    protected $helpers = ['form'];
-
     protected $base_rules = [
         'school' => [
             'rules'     => 'required|integer|greater_than[0]',
@@ -44,25 +41,12 @@ class AddMemberController extends BaseController
             if($school != null)
             {
                 $member_id = $this->request->getPost('member');
-                if($this->request->getPost('member') == 'new') {
-                    //validate and save new member
+                if($member_id == 'new')
+                    $member_id = $this->createMember();
 
-                    if($this->validate($this->new_member_rules)) {
-                        $member_id = $this->createMember(
-                            $this->request->getPost('name'),
-                            $this->request->getPost('email', FILTER_SANITIZE_EMAIL)
-                        );
+                if(!is_numeric($member_id))
+                    return $member_id;
 
-                        if($member_id === false) 
-                            return $this->return_error(
-                                [
-                                    'member' => 'Error occured while adding the new Member, please check the fields and try again.'
-                                ]
-                            );
-                    } else
-                        return $this->return_error();
-                    
-                }
                 $member =  model('MemberModel')->find($member_id);
 
                 if($member == null)
@@ -81,36 +65,40 @@ class AddMemberController extends BaseController
                         ]
                     );
 
-            
-                return json_encode([
-                    'school_id'     => $school->id,
-                    'member_id'     => $member->id,
-                    'member_html'   => view('schools/member', ['member' => $member, 'school' => $school])
-                ]);
+                $data = [
+                    'school_id'         => $school->id,
+                    'member_id'         => $member->id,
+                    'member_html'       => view('schools/member', ['member' => $member, 'school' => $school]),
+                    'school_members'    => $this->getSchoolMembersDropdownData()
+                ];
+
+                return json_encode($data);
             }
         }
 
         return $this->return_error();
     }
 
-    protected function return_error($errors = []){
-        $this->response->setStatusCode(Response::HTTP_BAD_REQUEST);
-        foreach($errors as $field => $message) {
-            $this->validator->setError($field, $message);
-        }
-        return $this->validator->listErrors();
-    }
+    protected function  createMember() {
+        if($this->validate($this->new_member_rules)) {
+            $name = $this->request->getPost('name');
+            $email_address = $this->request->getPost('email', FILTER_SANITIZE_EMAIL);
+            $member_model = model('MemberModel');
 
-    protected function  createMember($name, $email_address) {
-        $member_model = model('MemberModel');
-        $new_member = new \App\Entities\Member;
-        $new_member->name = $name;
-        $new_member->email_address = $email_address;
+            $new_member = new \App\Entities\Member;
+            $new_member->name = $name;
+            $new_member->email_address = $email_address;
 
-        if($member_model->save($new_member))
-            return $member_model->getInsertID();
-        else
-            return false;
+            if($member_model->save($new_member))
+                return $member_model->getInsertID();
+
+            return $this->return_error(
+                [
+                    'member' => 'Error occured while adding the new Member, please check the fields and try again.'
+                ]
+            );
+        } else
+            return $this->return_error();
     }
 
     protected function getSchool() {

@@ -3,7 +3,9 @@ $( document ).ready(function() {
 	     $(this).siblings('ul').toggle('swing');
 	});
     $('.close_btn').click(function(){
-	     $(this).parent('div').hide();
+	    $(this).parent('div').hide();
+	    $('#add_member_to_school_form form').trigger("reset");
+	    updateMembersDropdown();
 	});
 
     $('.add_new_members_toggle').click(function(){
@@ -28,6 +30,9 @@ $( document ).ready(function() {
 			school_id = data['school_id'];
 			member_id = data['member_id'];
 			$('#item-'+school_id+'-'+member_id).remove();
+
+			school_members = data['school_members'];
+	    	updateMembersDropdown();
 		});
 
 		posting.fail(function( data, textStatus, xhr ) {
@@ -48,10 +53,12 @@ $( document ).ready(function() {
 			school_id = data['school_id'];
 			member_id = data['member_id'];
 	    	$('#add_member_to_school_form').hide();
-	    	delete school_members[school_id][member_id];
-	    	updateMembersDropdown();
+	    	$('#add_member_to_school_form form').trigger("reset");
 	    	$('#school-'+school_id+' ul').append(data['member_html']);
 	    	$('#school-'+school_id+' ul').show('swing');
+
+			school_members = data['school_members'];
+	    	updateMembersDropdown();
 		});
 
 		posting.fail(function( data, textStatus, xhr ) {

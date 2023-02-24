@@ -5,26 +5,23 @@ namespace App\Controllers\Schools;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\Response;
 
-class RemoveMemberController extends BaseController
+class RemoveMemberController extends BaseApiController
 {
-    protected $helpers = ['form'];
-
     protected $base_rules = [
         'school' => 'required|integer|greater_than[0]',
         'member' => 'required|integer|greater_than[0]'
     ];
 
-    protected $school_id;
-    protected $member_id;
-
     public function index($school_id = null, $member_id = null)
     {
-        $this->school_id = $school_id;
-        $this->member_id = $member_id;
+        $data = [
+            'school' => $school_id,
+            'member' => $member_id
+        ];
         
-        if($this->validateData($this->getData(), $this->base_rules)) {
-            $school = $this->getSchool();
-            $member = $this->getMember();
+        if($this->validateData($data, $this->base_rules)) {
+            $school = model('SchoolModel')->with('members')->find($school_id);
+            $member = model('MemberModel')->find($member_id);
 
             $errors = [];
 
@@ -42,34 +39,15 @@ class RemoveMemberController extends BaseController
 
             $school->removeMember($member->id);
             
-            return json_encode([
-                'school_id'     => $school->id,
-                'member_id'     => $member->id,
-            ]);
+            $data = [
+                'school_id'         => $school->id,
+                'member_id'         => $member->id,
+                'school_members'    => $this->getSchoolMembersDropdownData()
+            ];
+
+            return json_encode($data);
         }
 
         return $this->return_error();
-    }
-
-    protected function return_error($errors = []){
-        $this->response->setStatusCode(Response::HTTP_BAD_REQUEST);
-        foreach($errors as $field => $message) {
-            $this->validator->setError($field, $message);
-        }
-        return $this->validator->listErrors();
-    }
-    protected function getData() {
-        return [
-            'school' => $this->school_id,
-            'member' => $this->member_id
-        ];
-    }
-
-    protected function getSchool() {
-        return model('SchoolModel')->with('members')->find($this->school_id);
-    }
-
-    protected function getMember() {
-        return model('MemberModel')->find($this->member_id);
     }
 }
