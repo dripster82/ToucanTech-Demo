@@ -29,7 +29,7 @@ class Database extends Config
         'hostname' => 'localhost',
         'username' => 'toucantech',
         'password' => 'password123',
-        'database' => 'ToucanTech_Test',
+        'database' => 'ToucanTech_Demo',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,

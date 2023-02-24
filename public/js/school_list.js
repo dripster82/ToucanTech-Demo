@@ -15,31 +15,7 @@ $( document ).ready(function() {
 	    $('#add_member_to_school_form').show();
 	});
 
-    $('.remove_member_btn').click(function(){
-    	school_id = $(this).data("school-id");
-    	member_id = $(this).data("member-id");
-    	posting = $.ajax({
-    		// url: '/schools/remove_member?'+$.param( { school:school_id, member: member_id } ), 
-    		url: '/schools/'+school_id+'/remove_member/'+member_id, 
-    		type: 'DELETE',
-    	});
- 
-		// Put the results in a div
-		posting.done(function( data, textStatus, xhr ) {
-			data = JSON.parse(data);
-			school_id = data['school_id'];
-			member_id = data['member_id'];
-			$('#item-'+school_id+'-'+member_id).remove();
-
-			school_members = data['school_members'];
-	    	updateMembersDropdown();
-		});
-
-		posting.fail(function( data, textStatus, xhr ) {
-			// $('#member_form_errors').html(data.responseText);
-			console.log(data.responseText);
-		});
-	});
+    $('.remove_member_btn').click(removeMember);
 
     $('#add_member_to_school_form form').submit(function(event){
   		event.preventDefault();
@@ -56,7 +32,9 @@ $( document ).ready(function() {
 	    	$('#add_member_to_school_form form').trigger("reset");
 	    	$('#school-'+school_id+' ul').append(data['member_html']);
 	    	$('#school-'+school_id+' ul').show('swing');
+	    	$('#school-'+school_id+' ul li.no_members_placeholder').remove();
 
+			$('#item-'+school_id+'-'+member_id+' .remove_member_btn').click(removeMember);
 			school_members = data['school_members'];
 	    	updateMembersDropdown();
 		});
@@ -115,3 +93,31 @@ function centerPopup(selector) {
         'margin-top' : -$(selector).outerHeight()/2
     });
 }
+
+function removeMember(){
+    	school_id = $(this).data("school-id");
+    	member_id = $(this).data("member-id");
+    	posting = $.ajax({
+    		// url: '/schools/remove_member?'+$.param( { school:school_id, member: member_id } ), 
+    		url: '/schools/'+school_id+'/remove_member/'+member_id, 
+    		type: 'DELETE',
+    	});
+ 
+		// Put the results in a div
+		posting.done(function( data, textStatus, xhr ) {
+			data = JSON.parse(data);
+			school_id = data['school_id'];
+			member_id = data['member_id'];
+			$('#item-'+school_id+'-'+member_id).remove();
+
+	    	if($('#school-'+school_id+' ul li').length == 0)
+				$('#school-'+school_id+' ul').append('<li class="no_members_placeholder">No Members Assigned</li>');
+			school_members = data['school_members'];
+	    	updateMembersDropdown();
+		});
+
+		posting.fail(function( data, textStatus, xhr ) {
+			// $('#member_form_errors').html(data.responseText);
+			console.log(data.responseText);
+		});
+	}

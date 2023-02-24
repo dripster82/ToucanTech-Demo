@@ -21,7 +21,7 @@
 				<?= view('schools/member', ['member' => $member, 'school' => $school]) ?>
 			<?php endforeach ?>
 		<?php else: ?>
-			<li>No Members Assigned</li>
+			<li class="no_members_placeholder">No Members Assigned</li>
 		<?php endif ?>
 		</ul>
 	</div>

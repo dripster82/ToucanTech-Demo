@@ -4,7 +4,8 @@
 To setup and run this small application just follow these steps
 
  - Clone Repo to your local system
- - Update the Confing/Database.php file to includ your db settings
+ - You will require mysql already installed
+   Update the Confing/Database.php file to include your db settings user, password, db_schema, etc
  - Run `composer install`
  - Run `php spark migrate`
  - Run `php spark db:seed DemoData`
