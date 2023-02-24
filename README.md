@@ -27,16 +27,22 @@ This assumes you already have mysql installed with a user and db_schema already 
 ## Retrospective
 After completing the challenge I was happy with want was accomplished in the time.
 
-I would have prefered to do a few things differently (as pointed out in the Cons below), which now having a better understanding of the CodeIgnitor I would be able to achieve.
+I would have prefered to do a few things differently (as pointed out in the "Didn't Go Well" section below), which now having a better understanding of the CodeIgnitor I would be able to achieve.
 
-### Pros
+
+### Went Well
  - It was functional and met the challenge requirements.
  - Test coverage for all the backend work I had been done.
  - Was fun learning a new framework
 
-### Cons
- - I would have liked to have tests for the frontend functionality
- - Ideally the controllers could have benefited with alot of the logic being moved out to a seperate service class
- - No Mocking of data was done for testing - only seeded data
+### Didn't Go Well
+ - Didn't get chance to add tests for the frontend functionality
+ - Controllers were bloated and would have benefited with alot of the logic being moved out to a seperate service classes
+ - No Mocking of data was done for testing - relied on seeded data only
  - Ran out of time to find a way to properly test the csv export controller.
  - JS would have benefitied from being more OOP based.
+ 
+### What was Learned
+ - A new framework
+ - Creating the services earlier on would have avoid the contined bloat in the Controllers
+ - Again staring the JS in OOP rather than just leaving it to refactor it later
