@@ -25,7 +25,10 @@ This assumes you already have mysql installed with a user and db_schema already 
  - In your browser goto `http://localhost:8080`
  
 ## Retrospective
-After completing the challenge I was happy with the results. 
+After completing the challenge I was happy with want was accomplished in the time.
+
+I would have prefered to do a few things differently (as pointed out in the Cons below), which now having a better understanding of the CodeIgnitor I would be able to achieve.
+
 ### Pros
  - It was functional and met the challenge requirements.
  - Test coverage for all the backend work I had been done.
