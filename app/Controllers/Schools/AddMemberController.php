@@ -36,19 +36,24 @@ class AddMemberController extends BaseApiController
 
     public function index()
     {
+        // Validate initially used params
         if($this->validate($this->base_rules)) {
             $school = $this->getSchool();
             if($school != null)
             {
+
+                // Check if we are adding a new member or assigning an existing member
                 $member_id = $this->request->getPost('member');
                 if($member_id == 'new')
                     $member_id = $this->createMember();
 
+                // if not an id its and error message return
                 if(!is_numeric($member_id))
                     return $member_id;
 
                 $member =  model('MemberModel')->find($member_id);
 
+                // check if member exists
                 if($member == null)
                     return $this->return_error(
                         [
@@ -56,6 +61,7 @@ class AddMemberController extends BaseApiController
                         ]
                     );
 
+                // Add member to school
                 if(!$school->hasMember($member_id))
                     $school->addMember($member_id);
                 else
@@ -79,7 +85,13 @@ class AddMemberController extends BaseApiController
         return $this->return_error();
     }
 
+/**
+ * Create a new Member
+ * 
+ * @return int|string 
+ */
     protected function  createMember() {
+        // validate the new member params
         if($this->validate($this->new_member_rules)) {
             $name = $this->request->getPost('name');
             $email_address = $this->request->getPost('email', FILTER_SANITIZE_EMAIL);
@@ -89,6 +101,7 @@ class AddMemberController extends BaseApiController
             $new_member->name = $name;
             $new_member->email_address = $email_address;
 
+            // save member and return the id if successful
             if($member_model->save($new_member))
                 return $member_model->getInsertID();
 
@@ -101,6 +114,11 @@ class AddMemberController extends BaseApiController
             return $this->return_error();
     }
 
+/**
+ * Create a new Member
+ * 
+ * @return \App\Entities\School 
+ */
     protected function getSchool() {
         $school_id = $this->request->getPost('school', FILTER_SANITIZE_NUMBER_INT);
         return model('SchoolModel')->find($school_id);

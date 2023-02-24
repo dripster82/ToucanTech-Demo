@@ -9,6 +9,16 @@ class BaseApiController extends BaseController
 {
     protected $helpers = ['form'];
 
+/**
+ * 
+ * Create an array of schools and members available to be used in the add new member Member dropdown 
+ * eg
+ * $data = [
+ *      school1_id => [member1_id, member2_id], 
+ *      school2_id => [member1_id, member3_id]
+ * ]
+ * @return array
+ */
     protected function getSchoolMembersDropdownData() {
         $data = [];
         $schools = model('SchoolModel')->with('members')->findAll();
@@ -23,6 +33,11 @@ class BaseApiController extends BaseController
         return $data;
     }
 
+/**
+ * Creates the html for the validation errors
+ * 
+ * @return string
+ */
     protected function return_error($errors = []){
         $this->response->setStatusCode(Response::HTTP_BAD_REQUEST);
         foreach($errors as $field => $message) {

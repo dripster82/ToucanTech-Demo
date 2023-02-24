@@ -19,12 +19,15 @@ class RemoveMemberController extends BaseApiController
             'member' => $member_id
         ];
         
+        // vaildate past params
         if($this->validateData($data, $this->base_rules)) {
+            //get school and member data
             $school = model('SchoolModel')->with('members')->find($school_id);
             $member = model('MemberModel')->find($member_id);
 
             $errors = [];
 
+            // check if school and member existing
             if($school == null)
                 $errors['school'] = 'School does not exist';
             
@@ -34,6 +37,7 @@ class RemoveMemberController extends BaseApiController
             if(count($errors) > 0)
                 return $this->return_error($errors);
 
+            // check that the member is actually assigned to the school
             if(!$school->hasMember($member->id))
                 return $this->return_error(['member' => 'Member is already not assigned to '.$school->name]);
 

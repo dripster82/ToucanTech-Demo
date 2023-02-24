@@ -11,9 +11,11 @@ class ExportController extends BaseController
 
     public function index()
     {
+      //get school data
       $schools = model('SchoolModel')->with('members')->findAll();
       $filename = 'schools_'.date('Ymd').'.csv'; 
 
+      // create csv file in temp memory
       $file = fopen('php://temp', 'r+');
       $header = ['School', 'Name', 'Email Address']; 
       fputcsv($file, $header);
@@ -23,6 +25,7 @@ class ExportController extends BaseController
             fputcsv($file, $line); 
          } 
       }
+      // read csv file from temp memory 
       rewind($file);
       $file_contents = stream_get_contents($file);
       fclose($file); 
