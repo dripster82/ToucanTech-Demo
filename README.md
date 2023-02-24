@@ -41,6 +41,7 @@ I would have prefered to do a few things differently (as pointed out in the "Did
  - No Mocking of data was done for testing - relied on seeded data only
  - Ran out of time to find a way to properly test the csv export controller.
  - JS would have benefitied from being more OOP based.
+ - Lack of Comments (After working in the world or Ruby where comments are discouraged over the use of descriptive method names. I have gotten out of the habit and need to get back into it)
  
 ### What was Learned
  - A new framework
