@@ -31,11 +31,14 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Schools\ListController::index');
 $routes->get('schools', 'Schools\ListController::index');
+$routes->get('schools/export', 'Schools\ExportController::index');
+$routes->get('schools/analysis', 'Schools\AnalysisController::index');
+
 $routes->get('schools/(:any)', 'Schools\ListController::index/$1');
 $routes->post('schools/add_member', 'Schools\AddMemberController::index');
-// $routes->delete('/schools/remove_member/', 'Schools\RemoveMemberController::index');
 $routes->delete('schools/(:num)/remove_member/(:num)', 'Schools\RemoveMemberController::index/$1/$2');
-// $routes->delete('schools/(:num)/remove_member/(:num)', [Schools\RemoveMemberController::class, 'index']);
+
+
 
 /*
  * --------------------------------------------------------------------

@@ -15,7 +15,8 @@
 	font-weight: bold;
 }
 
-.members_toggle {
+.members_toggle,
+.export_btn {
 	width: 22px;
 	cursor: pointer;
 	margin-bottom: -5px;
@@ -88,4 +89,36 @@
 	right: 10px;
 	width: 11px;
 	cursor: pointer;
+}
+.main_title {
+	display: block;
+}
+.main_title h2,
+.main_title img {
+	float: left;
+	margin: 0 10px 0 0;
+}
+
+#list_of_schools {
+    clear: left;
+}
+.chart {
+    clear: left;
+    width:600px;
+}
+
+.nav {
+	float:left;
+	width:200px;
+	height:100%;
+}
+
+.nav dd {
+	margin-left:5px;
+
+}
+#main_content {
+	float:left;
+	height:100%;
+	width:800px;
 }

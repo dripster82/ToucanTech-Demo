@@ -64,6 +64,10 @@ $( document ).ready(function() {
 		centerPopup('#add_member_to_school_form');
 	    $('#add_member_to_school_form').show();
 	}
+
+	$('.export_btn').click(function(){
+        window.open( $(this).data("url") );
+	});
 });
 
 function updateMembersDropdown() {
